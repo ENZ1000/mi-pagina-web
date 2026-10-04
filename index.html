@@ -3,99 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Portafolio Web</title>
+  <title>Portal Escolar - Acceso</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- Barra de navegación fija -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="#inicio" class="nav-logo">MiWeb<span>.</span></a>
-      <ul class="nav-links">
-        <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#sobre-mi">Sobre mí</a></li>
-        <li><a href="#proyectos">Proyectos</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- Sección 1: Hero / Inicio -->
-  <section id="inicio" class="hero-section">
-    <div class="hero-content">
-      <span class="badge">Bienvenido a mi sitio</span>
-      <h1>Hola, soy <span>Enzo</span> 👋</h1>
-      <p>Estudiante de informática, desarrollador y apasionado por la tecnología y los proyectos de software.</p>
-      <div class="hero-buttons">
-        <a href="#proyectos" class="btn btn-primary">Ver proyectos</a>
-        <a href="#contacto" class="btn btn-secondary">Contactar</a>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>Portal Escolar</h1>
+        <p>Inicie sesión con su cuenta institucional</p>
       </div>
+      
+      <form id="login-form">
+        <div class="input-group">
+          <label for="username">Usuario / RUT</label>
+          <input type="text" id="username" placeholder="ej. admin" required />
+        </div>
+        
+        <div class="input-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" placeholder="••••••••" required />
+        </div>
+        
+        <button type="submit" class="btn-submit">Ingresar</button>
+        <p id="error-msg" class="error-text">Credenciales incorrectas (Prueba: admin / 1234)</p>
+      </form>
     </div>
-  </section>
-
-  <!-- Sección 2: Sobre Mí -->
-  <section id="sobre-mi" class="section">
-    <div class="container">
-      <h2 class="section-title">Sobre mí</h2>
-      <div class="about-grid">
-        <div class="about-card">
-          <h3>👨‍💻 Perfil</h3>
-          <p>Me dedico al desarrollo web, algoritmos y sistemas. Disfruto resolver problemas complejos y construir herramientas funcionales.</p>
-        </div>
-        <div class="about-card">
-          <h3>🛠️ Habilidades</h3>
-          <ul class="skills-list">
-            <li>Git & GitHub</li>
-            <li>HTML5 / CSS3 / JavaScript</li>
-            <li>Python & C++</li>
-            <li>Bases de datos relacionales</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Sección 3: Proyectos -->
-  <section id="proyectos" class="section bg-alt">
-    <div class="container">
-      <h2 class="section-title">Proyectos destacados</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3>Sistema Web de Gestión</h3>
-          <p>Aplicación web con filtros avanzados de búsqueda y manejo de bases de datos relacionales.</p>
-          <span class="tag">Web</span>
-        </div>
-        <div class="project-card">
-          <h3>Algoritmos y Optimización</h3>
-          <p>Análisis experimental de complejidad temporal y rendimiento en estructuras de datos.</p>
-          <span class="tag">Algoritmos</span>
-        </div>
-        <div class="project-card">
-          <h3>Página Web Personal</h3>
-          <p>Sitio estático desplegado en GitHub Pages con diseño moderno y responsive.</p>
-          <span class="tag">Frontend</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Sección 4: Contacto -->
-  <section id="contacto" class="section">
-    <div class="container contact-container">
-      <h2 class="section-title">Contacto</h2>
-      <p>¿Tienes alguna consulta o propuesta de colaboración? Puedes encontrarme en mis redes:</p>
-      <div class="contact-links">
-        <a href="https://github.com/ENZ1000" target="_blank" class="btn btn-outline">GitHub</a>
-        <a href="mailto:tu-correo@ejemplo.com" class="btn btn-outline">Enviar Correo</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 Enzo. Creado con HTML y CSS en GitHub Pages.</p>
-  </footer>
+  </div>
 
   <script src="script.js"></script>
 </body>
