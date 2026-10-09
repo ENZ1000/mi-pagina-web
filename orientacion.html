@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <nav class="navbar">
     <a href="home.html" class="brand">Colegio - Intranet</a>
     <ul>
@@ -16,9 +17,210 @@
       <li><a href="index.html" class="btn-logout">Cerrar sesión</a></li>
     </ul>
   </nav>
+
   <main class="main-content">
-    <h2>Orientación y Apoyo Psicoeducativo</h2>
-    <p>Horarios de atención, apoyo a estudiantes y canales de ayuda institucional.</p>
+    <h2>Departamento de Orientación</h2>
+    <p>Gestión de atrasos, retiros, actas de reuniones y control de asistencia a preuniversitario.</p>
+
+    <!-- NAVEGACIÓN POR PESTAÑAS (TABS) -->
+    <div class="tabs-container">
+      <button class="tab-btn active" onclick="switchTab('atrasos')">⏰ Registro de Atrasos</button>
+      <button class="tab-btn" onclick="switchTab('retiros')">🚗 Registro de Retiros</button>
+      <button class="tab-btn" onclick="switchTab('reuniones')">🤝 Reuniones</button>
+      <button class="tab-btn" onclick="switchTab('preu')">🎓 Preuniversitario</button>
+    </div>
+
+    <!-- SECCIÓN 1: ATRASOS (Llegada después de las 8:10) -->
+    <section id="tab-atrasos" class="tab-content active">
+      <h3>Ingresar Registro de Atraso (Llegada > 8:10 AM)</h3>
+      <form id="form-atraso" onsubmit="handleAtrasoSubmit(event)">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="atraso-curso">Curso</label>
+            <select id="atraso-curso" required>
+              <option value="">Seleccione un curso...</option>
+              <option value="1M-A">1° Medio A</option>
+              <option value="2M-A">2° Medio A</option>
+              <option value="3M-A">3° Medio A</option>
+              <option value="4M-A">4° Medio A</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="atraso-alumno">Nombre del Alumno</label>
+            <input type="text" id="atraso-alumno" placeholder="ej. Juan Pérez" required />
+          </div>
+
+          <div class="input-group">
+            <label for="atraso-fecha">Fecha (Hoy)</label>
+            <input type="date" id="atraso-fecha" required readonly />
+          </div>
+
+          <div class="input-group">
+            <label for="atraso-hora">Hora de Llegada</label>
+            <input type="time" id="atraso-hora" required />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit btn-form">Registrar Atraso</button>
+      </form>
+
+      <hr class="divider" />
+
+      <h3>Historial de Atrasos de Hoy</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Hora Llegada</th>
+            <th>Curso</th>
+            <th>Alumno</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-atrasos">
+          <!-- Registros dinámicos -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECCIÓN 2: RETIROS -->
+    <section id="tab-retiros" class="tab-content">
+      <h3>Registrar Retiro de Alumno</h3>
+      <form id="form-retiro" onsubmit="handleRetiroSubmit(event)">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="retiro-curso">Curso</label>
+            <select id="retiro-curso" required>
+              <option value="">Seleccione un curso...</option>
+              <option value="1M-A">1° Medio A</option>
+              <option value="2M-A">2° Medio A</option>
+              <option value="3M-A">3° Medio A</option>
+              <option value="4M-A">4° Medio A</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="retiro-alumno">Nombre del Alumno</label>
+            <input type="text" id="retiro-alumno" placeholder="ej. Juan Pérez" required />
+          </div>
+
+          <div class="input-group">
+            <label for="retiro-fecha">Fecha (Hoy)</label>
+            <input type="date" id="retiro-fecha" required readonly />
+          </div>
+
+          <div class="input-group">
+            <label for="retiro-motivo">Motivo del Retiro</label>
+            <input type="text" id="retiro-motivo" placeholder="ej. Cita médica, Asunto personal" required />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit btn-form">Registrar Retiro</button>
+      </form>
+
+      <hr class="divider" />
+
+      <h3>Historial de Retiros de Hoy</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Curso</th>
+            <th>Alumno</th>
+            <th>Motivo</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-retiros">
+          <!-- Registros dinámicos -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECCIÓN 3: REUNIONES -->
+    <section id="tab-reuniones" class="tab-content">
+      <h3>Registro de Reunión con Apoderados</h3>
+      <form id="form-reunion" onsubmit="handleReunionSubmit(event)">
+        <div class="input-group">
+          <label for="reunion-resumen">Resumen de la Reunión</label>
+          <textarea id="reunion-resumen" rows="3" placeholder="Puntos principales tratados durante la sesión..." required></textarea>
+        </div>
+
+        <!-- PREGUNTAS Y RESPUESTAS DINÁMICAS -->
+        <div class="input-group">
+          <label>Preguntas y Respuestas de Apoderados</label>
+          <div id="contenedor-preguntas">
+            <div class="qa-pair">
+              <input type="text" class="qa-pregunta" placeholder="Escriba la pregunta del apoderado..." required />
+              <textarea class="qa-respuesta" rows="2" placeholder="Escriba la respuesta dada..."></textarea>
+            </div>
+          </div>
+          <button type="button" class="btn-secondary" onclick="agregarPregunta()">+ Agregar Pregunta</button>
+        </div>
+
+        <div class="input-group">
+          <label>Checklist de Asistencia de Apoderados</label>
+          <div class="checklist-grid">
+            <label><input type="checkbox" name="asistencia" value="María González (Ap. Lucas Silva)"> María González (Lucas Silva)</label>
+            <label><input type="checkbox" name="asistencia" value="Pedro Soto (Ap. Sofia Soto)"> Pedro Soto (Sofia Soto)</label>
+            <label><input type="checkbox" name="asistencia" value="Ana Rojas (Ap. Diego Rojas)"> Ana Rojas (Diego Rojas)</label>
+            <label><input type="checkbox" name="asistencia" value="Roberto Vera (Ap. Camila Vera)"> Roberto Vera (Camila Vera)</label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit btn-form">Guardar Acta de Reunión</button>
+      </form>
+    </section>
+
+    <!-- SECCIÓN 4: PREUNIVERSITARIO -->
+    <section id="tab-preu" class="tab-content">
+      <div class="info-box">
+        ℹ️ <strong>Aviso:</strong> Los alumnos inscritos en esta lista asisten al Preuniversitario del colegio, por lo que cuentan con <strong>permiso de salida autorizado</strong> sin necesidad de completar un formulario de retiro individual.
+      </div>
+
+      <div class="table-header-actions">
+        <h3>Lista de Alumnos Autorizados (Preu Colegio)</h3>
+        <div class="search-box">
+          <input type="text" id="buscar-preu" onkeyup="filtrarPreu()" placeholder="🔍 Buscar por Alumno, RUT o Curso..." />
+        </div>
+      </div>
+
+      <table class="data-table" id="tabla-preu">
+        <thead>
+          <tr>
+            <th>RUT</th>
+            <th>Nombre Alumno</th>
+            <th>Curso</th>
+            <th>Días de Asistencia</th>
+            <th>Estado Permiso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>21.345.678-9</td>
+            <td>Matías Contreras</td>
+            <td>4° Medio A</td>
+            <td>Lunes y Miércoles</td>
+            <td><span class="badge badge-success">Autorizado</span></td>
+          </tr>
+          <tr>
+            <td>21.876.543-1</td>
+            <td>Valentina Morales</td>
+            <td>4° Medio B</td>
+            <td>Martes y Jueves</td>
+            <td><span class="badge badge-success">Autorizado</span></td>
+          </tr>
+          <tr>
+            <td>21.901.234-5</td>
+            <td>Joaquín Herrera</td>
+            <td>3° Medio A</td>
+            <td>Viernes</td>
+            <td><span class="badge badge-success">Autorizado</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
   </main>
+
+  <script src="orientacion.js"></script>
 </body>
 </html>
