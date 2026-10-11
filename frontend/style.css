@@ -454,3 +454,9 @@ textarea:focus {
 .data-table tr.atraso-grave:hover {
   background-color: #fecaca !important;
 }
+
+.badge-secondary {
+  background-color: #f1f5f9;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
