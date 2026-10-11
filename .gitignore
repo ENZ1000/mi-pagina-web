@@ -1,0 +1,3 @@
+echo "backend/node_modules/" >> .gitignore
+echo "postgres_data/" >> .gitignore
+echo ".DS_Store" >> .gitignore

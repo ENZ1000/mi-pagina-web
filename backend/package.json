@@ -1,0 +1,14 @@
+{
+    "name": "docker-node-app",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "cors": "^2.8.6",
+        "express": "^4.22.3",
+        "pg": "^8.23.1",
+        "wait-port": "^1.1.0"
+    }
+}
