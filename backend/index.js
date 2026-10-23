@@ -5,12 +5,22 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
-app.use(express.json()); // Importante para recibir JSON del frontend
+app.use(express.json());
 
-// 1. RUTA PARA OBTENER LOS ATRASOS
+const atrasosRoutes = require('./routes/atrasosRoutes.js');
+const alumnosRoutes = require('./routes/alumnosRoutes.js');
+
+app.use('api/atrasos', atrasosRoutes);
+
+app.use('api/entidades', alumnosRoutes);
+
+app.listen(port, () => {
+  console.log(`API corriendo en http://localhost:${port}`);
+});
+
+/*
 app.get('/api/atrasos', async (req, res) => {
   try {
-    // Hacemos un JOIN para obtener el nombre del alumno junto con su atraso
     const query = `
       SELECT a.fecha, a.hora_llegada, al.nombre_completo, c.numero, c.letra
       FROM Atraso a
@@ -44,8 +54,9 @@ app.post('/api/atrasos', async (req, res) => {
     res.status(500).json({ error: 'Error al guardar el atraso. Verifica que el alumno exista.' });
   }
 });
+*/
 
-
+/*
 // ==========================================
 // RUTAS PARA CURSOS Y ALUMNOS
 // ==========================================
@@ -71,7 +82,4 @@ app.get('/api/alumnos', async (req, res) => {
     res.status(500).json({ error: 'Error al obtener alumnos' });
   }
 });
-
-app.listen(port, () => {
-  console.log(`API corriendo en http://localhost:${port}`);
-});
+*/
