@@ -2,18 +2,21 @@
 -- 1. TABLAS INDEPENDIENTES (Sin Claves Foráneas)
 -- ==========================================
 
+CREATE TABLE Usuario (
+    rut VARCHAR(12) PRIMARY KEY,
+    correo_institucional VARCHAR(150) UNIQUE NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    cargo VARCHAR(30) NOT NULL
+);
+
 CREATE TABLE Funcionario (
-    id_funcionario SERIAL PRIMARY KEY,
-    nombre_completo VARCHAR(100),
-    correo_institucional VARCHAR(100),
-    cargo VARCHAR(20)
+    rut VARCHAR(12) PRIMARY KEY,
+    nombre_completo VARCHAR(100)
 );
 
 CREATE TABLE Profesor (
-    id_profesor SERIAL PRIMARY KEY,
-    nombre_completo VARCHAR(100),
-    correo_institucional VARCHAR(100),
-    asignatura VARCHAR(100)
+    rut VARCHAR(12) PRIMARY KEY,
+    nombre_completo VARCHAR(100)
 );
 
 CREATE TABLE Tipo_Atraso (
@@ -28,7 +31,7 @@ CREATE TABLE Preuniversitario (
 );
 
 CREATE TABLE Apoderado (
-    id_apoderado SERIAL PRIMARY KEY,
+    rut VARCHAR(12) PRIMARY KEY,
     nombre_completo VARCHAR(100),
     correo_electronico VARCHAR(100),
     fecha_nacimiento DATE,
@@ -44,14 +47,14 @@ CREATE TABLE Curso (
     id_curso SERIAL PRIMARY KEY,
     numero INT, 
     letra VARCHAR(5), 
-    id_profesor INT UNIQUE, 
+    rut_profesor VARCHAR(12), 
     CONSTRAINT fk_curso_profesor 
-        FOREIGN KEY (id_profesor) REFERENCES Profesor(id_profesor)
+        FOREIGN KEY (rut_profesor) REFERENCES Profesor(rut)
 );
 
 CREATE TABLE Alumno (
-    id_alumno SERIAL PRIMARY KEY, 
-    id_apoderado INT NOT NULL,     
+    rut VARCHAR(12) PRIMARY KEY, 
+    rut_apoderado VARCHAR(12) NOT NULL,    
     nombre_completo VARCHAR(100),
     fecha_nacimiento DATE,
     edad INT,
@@ -61,7 +64,7 @@ CREATE TABLE Alumno (
     curso_anterior INT NOT NULL,
     curso_actual INT NOT NULL, 
     CONSTRAINT fk_alumno_apoderado 
-        FOREIGN KEY (id_apoderado) REFERENCES Apoderado(id_apoderado),
+        FOREIGN KEY (rut_apoderado) REFERENCES Apoderado(rut),
     CONSTRAINT fk_alumno_curso_actual 
         FOREIGN KEY (curso_actual) REFERENCES Curso(id_curso),
     CONSTRAINT fk_alumno_curso_anterior
@@ -84,8 +87,8 @@ CREATE TABLE Reunion_Apoderados (
 
 CREATE TABLE Ficha_General_Alumno (
     id_ficha SERIAL PRIMARY KEY,
-    id_funcionario INT NOT NULL,
-    id_alumno INT UNIQUE NOT NULL, 
+    rut_funcionario VARCHAR(12) NOT NULL,
+    rut_alumno VARCHAR(12) NOT NULL,
     antecedentes_socioeconomicos TEXT,
     antecedente_emocional TEXT,
     antecedente_salud TEXT,
@@ -93,55 +96,55 @@ CREATE TABLE Ficha_General_Alumno (
     estado_acuse_profesor VARCHAR(50),
     fecha_acuse_recibo DATE,
     CONSTRAINT fk_fga_funcionario 
-        FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id_funcionario),
+        FOREIGN KEY (rut_funcionario) REFERENCES Funcionario(rut),
     CONSTRAINT fk_fga_alumno 
-        FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno)
+        FOREIGN KEY (rut_alumno) REFERENCES Alumno(rut)
 );
 
 CREATE TABLE Ficha_Psicopedagogico (
     id_expediente SERIAL PRIMARY KEY,
-    id_funcionario INT NOT NULL,
-    id_alumno INT UNIQUE NOT NULL, 
+    rut_funcionario VARCHAR(12) NOT NULL,
+    rut_alumno VARCHAR(12) NOT NULL,
     necesidad_evaluativa VARCHAR(100),
     evaluacion_diferenciada VARCHAR(50),
     tipo_nee VARCHAR(100),
     estado_plan VARCHAR(50),
     fecha_ingreso DATE,
     CONSTRAINT fk_fp_funcionario 
-        FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id_funcionario),
+        FOREIGN KEY (rut_funcionario) REFERENCES Funcionario(rut),
     CONSTRAINT fk_fp_alumno 
-        FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno)
+        FOREIGN KEY (rut_alumno) REFERENCES Alumno(rut)
 );
 
 CREATE TABLE Registro_Convivencia (
     id_registro SERIAL PRIMARY KEY,
-    id_funcionario INT NOT NULL,
-    id_alumno INT NOT NULL,
+    rut_funcionario VARCHAR(12) NOT NULL,
+    rut_alumno VARCHAR(12) NOT NULL,
     fecha DATE,
     curso_pre_accidente VARCHAR(50),
     situacion TEXT,
     observacion_textual TEXT,
     CONSTRAINT fk_rc_funcionario 
-        FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id_funcionario),
+        FOREIGN KEY (rut_funcionario) REFERENCES Funcionario(rut),
     CONSTRAINT fk_rc_alumno 
-        FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno)
+        FOREIGN KEY (rut_alumno) REFERENCES Alumno(rut)
 );
 
 CREATE TABLE LicenciaMedica (
     id_licencia SERIAL PRIMARY KEY,
-    id_alumno INT NOT NULL,
+    rut_alumno VARCHAR(12) NOT NULL,
     diagnostico VARCHAR(255),
     dias_reposo INT,
     fecha_inicio DATE,      
     eximido_fisico BOOLEAN,  
     CONSTRAINT fk_lm_alumno 
-        FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno)
+        FOREIGN KEY (rut_alumno) REFERENCES Alumno(rut)
 );
 
 CREATE TABLE Retiro (
     id_retiro SERIAL PRIMARY KEY,
     id_curso INT NOT NULL,
-    id_alumno INT NOT NULL,
+    rut_alumno VARCHAR(12) NOT NULL,
     tipo VARCHAR(50), 
     fecha DATE,    
     hora TIME,       
@@ -149,17 +152,17 @@ CREATE TABLE Retiro (
     CONSTRAINT fk_retiro_curso 
         FOREIGN KEY (id_curso) REFERENCES Curso(id_curso),
     CONSTRAINT fk_retiro_alumno 
-        FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno)
+        FOREIGN KEY (rut_alumno) REFERENCES Alumno(rut)
 );
 
 CREATE TABLE Atraso (
     fecha DATE NOT NULL,
-    id_alumno INT NOT NULL, 
+    rut_alumno VARCHAR(12) NOT NULL, 
     id_atraso INT NOT NULL, 
     hora_llegada TIME NOT NULL,
-    PRIMARY KEY (fecha, id_alumno),
+    PRIMARY KEY (fecha, rut_alumno),
     CONSTRAINT fk_atraso_alumno 
-        FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno),
+        FOREIGN KEY (rut_alumno) REFERENCES Alumno(rut),
     CONSTRAINT fk_atraso_tipo 
         FOREIGN KEY (id_atraso) REFERENCES Tipo_Atraso(id_atraso)
 );
@@ -170,11 +173,11 @@ CREATE TABLE Atraso (
 -- ==========================================
 
 CREATE TABLE Asistencia_Preuniversitario (
-    id_alumno INT NOT NULL,
+    rut_alumno VARCHAR(12) NOT NULL,
     id_preu INT NOT NULL,
-    PRIMARY KEY (id_alumno, id_preu),
+    PRIMARY KEY (rut_alumno, id_preu),
     CONSTRAINT fk_apreu_alumno 
-        FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno),
+        FOREIGN KEY (rut_alumno) REFERENCES Alumno(rut),
     CONSTRAINT fk_apreu_preu 
         FOREIGN KEY (id_preu) REFERENCES Preuniversitario(id_preu)
 );
@@ -190,13 +193,13 @@ CREATE TABLE Registro_Preguntas (
 
 CREATE TABLE Asistencia_Reunion (
     id_curso INT NOT NULL,
-    id_apoderado INT NOT NULL,
+    rut_apoderado VARCHAR(12) NOT NULL,
     id_reunion INT NOT NULL,
-    PRIMARY KEY (id_curso, id_apoderado, id_reunion),
+    PRIMARY KEY (id_curso, rut_apoderado, id_reunion),
     CONSTRAINT fk_areu_curso 
         FOREIGN KEY (id_curso) REFERENCES Curso(id_curso),
     CONSTRAINT fk_areu_apoderado 
-        FOREIGN KEY (id_apoderado) REFERENCES Apoderado(id_apoderado),
+        FOREIGN KEY (rut_apoderado) REFERENCES Apoderado(rut),
     CONSTRAINT fk_areu_reunion 
         FOREIGN KEY (id_reunion) REFERENCES Reunion_Apoderados(id_reunion)
 );

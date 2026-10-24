@@ -1,18 +1,21 @@
 const express = require('express');
 const cors = require('cors');
-const pool = require('./db'); 
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
 
+const authRoutes = require('./routes/authRoutes.js');
 const atrasosRoutes = require('./routes/atrasosRoutes.js');
 const alumnosRoutes = require('./routes/alumnosRoutes.js');
+const saludRoutes = require('./routes/saludRoutes.js');
 
-app.use('api/atrasos', atrasosRoutes);
+app.use('/auth', authRoutes);
 
-app.use('api/entidades', alumnosRoutes);
+app.use('/api/alumnos', alumnosRoutes);
+app.use('/api/orientacion', atrasosRoutes);
+app.use('/api/salud', saludRoutes);
 
 app.listen(port, () => {
   console.log(`API corriendo en http://localhost:${port}`);

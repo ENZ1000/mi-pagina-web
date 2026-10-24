@@ -1,12 +1,12 @@
-version: '3.8'
 services:
   # 1. El servidor que mostrará tu página web
   frontend:
-    image: nginx:alpine
+    build: ./frontend
     ports:
-      - "8080:80"
+      - "5173:5173"
     volumes:
-      - ./frontend:/usr/share/nginx/html
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - app
 
@@ -20,7 +20,8 @@ services:
       - DB_PORT=5432
       - DB_USER=user
       - DB_PASSWORD=password
-      - DB_NAME=mydb
+      - DB_NAME=colegio_icco_db
+      - JWT_SECRET=12345
     depends_on:
       - postgres_db
     volumes:
@@ -33,10 +34,10 @@ services:
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=mydb
+      - POSTGRES_DB=colegio_icco_db
     volumes:
+      - ./init_scripts:/docker-entrypoint-initdb.d
       - postgres_data:/var/lib/postgresql/data
-      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
 

@@ -1,4 +1,4 @@
-const pool = require('./db'); 
+const pool = require('../config/db.js');
 
 const obtenerTodosAlumnos = async () => {
     const result = await pool.query(`

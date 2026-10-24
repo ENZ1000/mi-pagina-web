@@ -1,4 +1,4 @@
-const { obtenerAlumnos, obtenerTodosCursos } = require('../models/alumnosModel')
+const { obtenerTodosAlumnos, obtenerTodosCursos } = require('../models/alumnosModel')
 
 const obtenerAlumnos = async (req, res) => {
     try{
