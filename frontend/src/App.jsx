@@ -10,6 +10,8 @@ import Orientacion from './Orientacion';
 import Salud from './Salud';
 import Atrasos from './Atrasos';
 import Retiros from './Retiros';
+import Reuniones from './Reuniones';
+import Preuniversitario from './Preuniversitario';
 import './style.css'; 
 
 function Navbar() {
@@ -47,6 +49,8 @@ function Navbar() {
                 <>
                 <li><Link to="/atrasos">Atrasos</Link></li>
                 <li><Link to="/retiros">Retiros</Link></li>
+                <li><Link to="/reuniones">Reuniones</Link></li>
+                <li><Link to="/preuniversitarios">Preuniversitarios</Link></li>
                 </>
               )}
               
@@ -89,6 +93,8 @@ function AppContent() {
               <Route path="/director" element={<Director />} />
               <Route path="/atrasos" element={<Atrasos />} />
               <Route path="/retiros" element={<Retiros />} />
+              <Route path="/reuniones" element={<Reuniones />} />
+              <Route path="/preuniversitarios" element={<Preuniversitario />} />
               <Route path="/salud" element={<Salud />} />
             </Route>
           </Routes>

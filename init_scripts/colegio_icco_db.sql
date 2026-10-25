@@ -136,7 +136,8 @@ CREATE TABLE LicenciaMedica (
     diagnostico VARCHAR(255),
     dias_reposo INT,
     fecha_inicio DATE,      
-    eximido_fisico BOOLEAN,  
+    eximido_fisico BOOLEAN,
+    ruta_archivo VARCHAR(255),  
     CONSTRAINT fk_lm_alumno 
         FOREIGN KEY (rut_alumno) REFERENCES Alumno(rut)
 );
