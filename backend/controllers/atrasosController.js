@@ -1,15 +1,13 @@
 const { 
-    atrasosByRut, 
+    atrasosByFecha, 
     agregarAtraso, 
-    obtenerTodosRetiros, 
-    agregarRetiro, 
     agregarReunionConPreguntas 
 } = require('../models/atrasosModel');
 
 const obtenerAtrasos = async (req, res) => {
     try {
-        const atrasos = await atrasosByRut(req.query.rut); 
-        res.json(atrasos.rows || atrasos);
+        const atrasos = await atrasosByFecha(req.query.fecha); 
+        res.json(atrasos);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Error al obtener atrasos' });
@@ -18,33 +16,12 @@ const obtenerAtrasos = async (req, res) => {
 
 const nuevoAtraso = async (req, res) => {
     try {
-        const { fecha, rut_alumno, id_atraso, hora_llegada } = req.body;
-        const result = await agregarAtraso(fecha, rut_alumno, id_atraso, hora_llegada);
-        res.status(201).json({ mensaje: 'Atraso registrado con éxito', registro: result.rows[0] });
+        const { fecha, rut_alumno, hora_llegada } = req.body;
+        const result = await agregarAtraso(fecha, rut_alumno, hora_llegada);
+        res.status(201).json({ mensaje: 'Atraso registrado con éxito', registro: result });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Error al guardar el atraso. Verifica que el alumno exista.' });
-    }
-};
-
-const obtenerRetiros = async (req, res) => {
-    try {
-        const retiros = await obtenerTodosRetiros();
-        res.json(retiros.rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error al obtener retiros' });
-    }
-};
-
-const nuevoRetiro = async (req, res) => {
-    try {
-        const { id_curso, rut_alumno, tipo, fecha, hora, motivo } = req.body;
-        const result = await agregarRetiro(id_curso, rut_alumno, tipo, fecha, hora, motivo);
-        res.status(201).json({ mensaje: 'Retiro registrado con éxito', registro: result.rows[0] });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error al registrar el retiro.' });
     }
 };
 
@@ -62,7 +39,5 @@ const nuevaReunion = async (req, res) => {
 module.exports = { 
     obtenerAtrasos, 
     nuevoAtraso, 
-    obtenerRetiros, 
-    nuevoRetiro, 
     nuevaReunion 
 };

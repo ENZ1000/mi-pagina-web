@@ -9,12 +9,14 @@ app.use(express.json());
 const authRoutes = require('./routes/authRoutes.js');
 const atrasosRoutes = require('./routes/atrasosRoutes.js');
 const alumnosRoutes = require('./routes/alumnosRoutes.js');
+const retirosRoutes = require('./routes/retirosRoutes.js');
 const saludRoutes = require('./routes/saludRoutes.js');
 
 app.use('/auth', authRoutes);
 
 app.use('/api/alumnos', alumnosRoutes);
-app.use('/api/orientacion', atrasosRoutes);
+app.use('/api/atrasos', atrasosRoutes);
+app.use('/api/retiros', retirosRoutes);
 app.use('/api/salud', saludRoutes);
 
 app.listen(port, () => {
