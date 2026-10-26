@@ -1,3 +1,14 @@
-echo "backend/node_modules/" >> .gitignore
-echo "postgres_data/" >> .gitignore
-echo ".DS_Store" >> .gitignore
+# Dependencias
+backend/node_modules/
+frontend/node_modules/
+
+
+# Datos persistentes de PostgreSQL
+postgres_data/
+
+# Archivos del sistema
+.DS_Store
+
+# Ignorar archivos dentro de licencias, pero conservar la carpeta
+backend/uploads/licencias/*
+!backend/uploads/licencias/.gitkeep
