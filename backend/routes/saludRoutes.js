@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const multer = require('multer');
 const path = require('path');
-const { obtenerLicencias, nuevaLicencia, descargarLicencia } = require('../controllers/saludController');
+const { obtenerLicencias, nuevaLicencia, descargarLicencia, getLicenciasPorAlumno } = require('../controllers/saludController');
 
 // Configuración de Multer para asignar nombre único a cada licencia
 const storage = multer.diskStorage({
@@ -19,8 +19,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+router.get('/alumno/:rut', getLicenciasPorAlumno);
 router.get('/licencias', obtenerLicencias);
 router.post('/nueva-licencia', upload.single('archivo_licencia'), nuevaLicencia);
 router.get('/licencias/:id/descargar', descargarLicencia);
+
 
 module.exports = router;

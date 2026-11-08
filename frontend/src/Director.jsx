@@ -11,12 +11,12 @@ export default function Director() {
 
       <div className="actions-grid">
         <Link to="/director/atrasos" className="action-card">
-          <h3>📋 Ver Atrasos</h3>
+          <h3>Ver Atrasos</h3>
           <p>Revisar el registro de atrasos y asistencia diaria de los estudiantes.</p>
         </Link>
 
         <Link to="/director/buscar-alumno" className="action-card">
-          <h3>🔍 Buscar Alumno</h3>
+          <h3>Buscar Alumno</h3>
           <p>Consultar fichas, historial y datos de matrícula por estudiante.</p>
         </Link>
       </div>

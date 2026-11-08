@@ -26,8 +26,22 @@ const obtenerRutaLicencia = async (id_licencia) => {
     return await pool.query(query, [id_licencia]);
 };
 
+const obtenerLicenciasPorAlumno = async (rut_alumno) => {
+    const query = `
+        SELECT l.*, a.nombre_completo as nombre_alumno, c.numero, c.letra 
+        FROM LicenciaMedica l
+        JOIN Alumno a ON l.rut_alumno = a.rut
+        JOIN Curso c ON a.curso_actual = c.id_curso
+        WHERE l.rut_alumno = $1
+        ORDER BY l.fecha_inicio DESC;
+    `;
+    const result = await pool.query(query, [rut_alumno]);
+    return result.rows;
+};
+
 module.exports = {
     obtenerTodasLicencias,
     agregarLicencia,
-    obtenerRutaLicencia
+    obtenerRutaLicencia,
+    obtenerLicenciasPorAlumno
 };

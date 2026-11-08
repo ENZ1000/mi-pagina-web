@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { obtenerTodasLicencias, agregarLicencia,obtenerRutaLicencia } = require('../models/saludModel');
+const { obtenerTodasLicencias, agregarLicencia, obtenerRutaLicencia, obtenerLicenciasPorAlumno } = require('../models/saludModel');
 
 const obtenerLicencias = async (req, res) => {
     try {
@@ -63,4 +63,16 @@ const descargarLicencia = async (req, res) => {
     }
 };
 
-module.exports = { obtenerLicencias, nuevaLicencia, descargarLicencia };
+const getLicenciasPorAlumno = async (req, res) => {
+    try {
+        const { rut } = req.params;
+        // Importa obtenerLicenciasPorAlumno desde tu modelo arriba
+        const licencias = await obtenerLicenciasPorAlumno(rut);
+        res.json(licencias);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al obtener licencias del alumno' });
+    }
+};
+
+module.exports = { obtenerLicencias, nuevaLicencia, descargarLicencia, getLicenciasPorAlumno };

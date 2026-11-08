@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Atrasos() {
-    const [vistaActiva, setVistaActiva] = useState('ingresar'); 
+// Añadimos modoDirector como parámetro (por defecto false)
+export default function Atrasos({ modoDirector = false }) {
+    // Si estamos en modo director, la vista activa inicial siempre es 'historial'
+    const [vistaActiva, setVistaActiva] = useState(modoDirector ? 'historial' : 'ingresar'); 
 
     const [cursos, setCursos] = useState([]);
     const fechaHoy = new Date().toLocaleDateString('en-CA');
@@ -25,7 +27,7 @@ export default function Atrasos() {
         curso: '',
         rut_alumno: '',
         fecha: '',
-        gravedad: '' // NUEVO ESTADO DE FILTRO
+        gravedad: '' 
     });
 
     useEffect(() => {
@@ -41,7 +43,12 @@ export default function Atrasos() {
             }
         };
         fetchInicial();
-        fetchAtrasosHoy(); 
+        
+        // Solo cargamos la tabla de hoy si NO estamos en modo director
+        if (!modoDirector) {
+            fetchAtrasosHoy(); 
+        }
+        
         fetchHistorial(); 
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -80,7 +87,7 @@ export default function Atrasos() {
                 rut_alumno: filtros.rut_alumno || null,
                 anio: anio || null,
                 semestre: semestre || null,
-                gravedad: filtros.gravedad || null // SE ENVÍA EL PARÁMETRO
+                gravedad: filtros.gravedad || null
             };
 
             const response = await axios.get('http://localhost:3000/api/atrasos', { params });
@@ -147,30 +154,33 @@ export default function Atrasos() {
 
     const getClaseColor = (nombreAtraso) => {
         if (nombreAtraso === 'Grave') return 'atraso-grave';
-        if (nombreAtraso === 'Mayor') return 'atraso-leve'; // Basado en tu lógica actual
+        if (nombreAtraso === 'Mayor') return 'atraso-leve'; 
         return '';
     };
 
     return (
         <div>
-            <div className="tabs-container" style={{ display: 'flex', gap: '1rem', borderBottom: '2px solid var(--border)', marginBottom: '2rem' }}>
-                <button 
-                    className={`tab-btn ${vistaActiva === 'ingresar' ? 'active' : ''}`} 
-                    onClick={() => setVistaActiva('ingresar')}
-                    style={{ padding: '0.75rem', background: 'none', border: 'none', borderBottom: vistaActiva === 'ingresar' ? '3px solid var(--primary)' : '3px solid transparent', cursor: 'pointer', fontWeight: 'bold' }}
-                >
-                    Ingresar Registro
-                </button>
-                <button 
-                    className={`tab-btn ${vistaActiva === 'historial' ? 'active' : ''}`} 
-                    onClick={() => setVistaActiva('historial')}
-                    style={{ padding: '0.75rem', background: 'none', border: 'none', borderBottom: vistaActiva === 'historial' ? '3px solid var(--primary)' : '3px solid transparent', cursor: 'pointer', fontWeight: 'bold' }}
-                >
-                    Ver Historial Filtrado
-                </button>
-            </div>
+            {/* Ocultamos las pestañas si estamos en modoDirector */}
+            {!modoDirector && (
+                <div className="tabs-container" style={{ display: 'flex', gap: '1rem', borderBottom: '2px solid var(--border)', marginBottom: '2rem' }}>
+                    <button 
+                        className={`tab-btn ${vistaActiva === 'ingresar' ? 'active' : ''}`} 
+                        onClick={() => setVistaActiva('ingresar')}
+                        style={{ padding: '0.75rem', background: 'none', border: 'none', borderBottom: vistaActiva === 'ingresar' ? '3px solid var(--primary)' : '3px solid transparent', cursor: 'pointer', fontWeight: 'bold' }}
+                    >
+                        Ingresar Registro
+                    </button>
+                    <button 
+                        className={`tab-btn ${vistaActiva === 'historial' ? 'active' : ''}`} 
+                        onClick={() => setVistaActiva('historial')}
+                        style={{ padding: '0.75rem', background: 'none', border: 'none', borderBottom: vistaActiva === 'historial' ? '3px solid var(--primary)' : '3px solid transparent', cursor: 'pointer', fontWeight: 'bold' }}
+                    >
+                        Ver Historial Filtrado
+                    </button>
+                </div>
+            )}
 
-            {vistaActiva === 'ingresar' && (
+            {vistaActiva === 'ingresar' && !modoDirector && (
                 <div className="tab-content active">
                     <h3>Ingresar Registro de Atraso</h3>
                     <form onSubmit={handleAtrasoSubmit} style={{ marginTop: '1rem' }}>
@@ -246,7 +256,9 @@ export default function Atrasos() {
 
             {vistaActiva === 'historial' && (
                 <div className="tab-content active">
-                    <h3>Filtros de Búsqueda Avanzada</h3>
+                    {/* Si estamos en modo director, podemos agregar un título específico */}
+                    {modoDirector && <h2>Historial General de Atrasos - Dirección</h2>}
+                    {!modoDirector && <h3>Filtros de Búsqueda Avanzada</h3>}
                     
                     <div className="form-grid" style={{ marginBottom: '1.5rem', background: 'var(--card-bg)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
                         <div className="input-group">
@@ -286,7 +298,6 @@ export default function Atrasos() {
                             <input type="date" value={filtros.fecha} onChange={(e) => setFiltros({...filtros, fecha: e.target.value})} />
                         </div>
                         
-                        {/* NUEVO SELECTOR DE GRAVEDAD */}
                         <div className="input-group">
                             <label>Filtrar por Gravedad</label>
                             <select value={filtros.gravedad} onChange={(e) => setFiltros({...filtros, gravedad: e.target.value})} style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border)' }}>

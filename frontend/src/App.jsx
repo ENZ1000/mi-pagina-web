@@ -6,6 +6,8 @@ import Login from './Login';
 import Registro from './Registro';
 import Home from './Home';
 import Director from './Director';
+// Importamos la nueva vista que crearemos
+import BuscarAlumno from './BuscarAlumno'; 
 import Orientacion from './Orientacion';
 import Salud from './Salud';
 import HistorialSalud from './HistorialSalud';
@@ -14,6 +16,7 @@ import Retiros from './Retiros';
 import Reuniones from './Reuniones';
 import Preuniversitario from './Preuniversitario';
 import './style.css';
+import DetalleAlumno from './DetalleAlumno';
 
 function Navbar() {
   const { user, logout } = useContext(AuthContext);
@@ -73,7 +76,16 @@ function AppContent() {
             <Route element={<ProtectedRoute />}>
               <Route path="/home" element={<Home />} />
               <Route path="/director" element={<Director />} />
+              
+              {/* RUTAS DEL DIRECTOR */}
+              {/* Reutilizamos Atrasos pero le pasamos la prop modoDirector */}
+              <Route path="/director/atrasos" element={<Atrasos modoDirector={true} />} />
+              <Route path="/director/buscar-alumno" element={<BuscarAlumno />} />
+              {/* Ruta futura para ver el detalle de un alumno específico */}
+              <Route path="/director/alumno/:rut" element={<DetalleAlumno />} />
+
               <Route path="/orientacion" element={<Orientacion />} />
+              <Route path="/director/alumno/:rut" element={<DetalleAlumno />} />
               <Route path="/atrasos" element={<Atrasos />} />
               <Route path="/retiros" element={<Retiros />} />
               <Route path="/reuniones" element={<Reuniones />} />
