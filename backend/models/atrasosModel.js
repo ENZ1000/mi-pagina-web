@@ -76,4 +76,22 @@ const atrasosFiltrados = async (filtros) => {
     return result.rows;
 };
 
-module.exports = { agregarAtraso, obtenerSemestresDisponibles, atrasosFiltrados };
+const obtenerAtrasosParaNotificar = async (fecha) => {
+  const query = `
+    SELECT 
+      al.nombre_completo AS nombre_estudiante, 
+      al.rut AS rut_estudiante, 
+      atr.hora_llegada, 
+      ap.correo_electronico AS correo_apoderado
+    FROM Atraso atr
+    JOIN Alumno al ON atr.rut_alumno = al.rut
+    JOIN Apoderado ap ON al.rut_apoderado = ap.rut
+    WHERE atr.fecha = $1 
+      AND atr.hora_llegada > '08:20:00' 
+      AND atr.hora_llegada <= '09:30:00'
+  `;
+  const result = await pool.query(query, [fecha]);
+  return result.rows;
+};
+
+module.exports = { agregarAtraso, obtenerSemestresDisponibles, atrasosFiltrados, obtenerAtrasosParaNotificar };

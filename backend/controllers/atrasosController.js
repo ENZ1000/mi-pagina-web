@@ -1,8 +1,11 @@
 const { 
     atrasosFiltrados, 
     agregarAtraso,
-    obtenerSemestresDisponibles
+    obtenerSemestresDisponibles,
+    obtenerAtrasosParaNotificar
 } = require('../models/atrasosModel');
+
+const axios = require('axios'); // importacion que ayudara a comunicarse con brevo
 
 const obtenerAtrasos = async (req, res) => {
     try {
@@ -46,4 +49,43 @@ const nuevoAtraso = async (req, res) => {
     }
 };
 
-module.exports = { obtenerAtrasos, nuevoAtraso, getSemestres };
+const notificarAtrasosMatutinos = async () => {
+    try {
+        // Obtiene la fecha actual en formato YYYY-MM-DD
+        const fechaHoy = new Date().toISOString().split('T')[0];
+        const atrasos = await obtenerAtrasosParaNotificar(fechaHoy);
+
+        if (atrasos.length === 0) {
+            console.log('No hay atrasos para notificar hoy entre 08:20 y 09:30.');
+            return;
+        }
+
+        // Iteración individual para cumplir con los correos independientes por alumno sin importar si es el mismo apoderado
+        for (const registro of atrasos) {
+            const payload = {
+                sender: { name: "Inspectoría Colegio", email: "christophercolocolo280@gmail.com" },
+                to: [{ email: registro.correo_apoderado }],
+                subject: "Notificación de Atraso Escolar",
+                htmlContent: `
+                  <p>Estimado Apoderado,</p>
+                  <p>Le informamos que el estudiante <strong>${registro.nombre_estudiante}</strong> 
+                  (RUT: ${registro.rut_estudiante}) ha registrado un ingreso atrasado el día de hoy.</p>
+                  <p>Hora exacta de llegada: <strong>${registro.hora_llegada}</strong></p>
+                `
+            };
+
+            await axios.post('https://api.brevo.com/v3/smtp/email', payload, {
+                headers: {
+                    'accept': 'application/json',
+                    'api-key': process.env.BREVO_API_KEY,
+                    'content-type': 'application/json'
+                }
+            });
+        }
+        console.log(`Se enviaron con éxito ${atrasos.length} notificaciones de atraso a las 09:30.`);
+    } catch (error) {
+        console.error('Error al comunicarse con Brevo:', error.message);
+    }
+};
+
+module.exports = { obtenerAtrasos, nuevoAtraso, getSemestres, notificarAtrasosMatutinos };
