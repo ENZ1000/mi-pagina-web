@@ -23,4 +23,19 @@ const pool = require('../config/db');
         return rows;
     };
 
-module.exports = { getAll, getAlumnosByPreuId };
+    const inscribirAlumnoPreu = async (rut_alumno, id_preu) => {
+        const query = `
+            INSERT INTO Asistencia_Preuniversitario (rut_alumno, id_preu)
+            VALUES ($1, $2)
+            ON CONFLICT (rut_alumno, id_preu) DO NOTHING
+            RETURNING *;
+        `;
+        const { rows } = await pool.query(query, [rut_alumno, id_preu]);
+        return rows[0];
+    };
+
+module.exports = {
+    getAll,
+    getAlumnosByPreuId,
+    inscribirAlumnoPreu
+};
