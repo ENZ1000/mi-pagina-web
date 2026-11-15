@@ -307,7 +307,7 @@ export default function Salud() {
 
           <div className="input-group">
             <label htmlFor="salud-fecha-ingreso">Fecha de Ingreso (Hoy)</label>
-            <input type="date" id="salud-fecha-ingreso" value={fechaIngreso} required readOnly />
+            <input type="date" id="salud-fecha-ingreso" value={fechaHoy} required readOnly />
           </div>
 
           <div className="input-group">
