@@ -6,13 +6,17 @@ import Login from './Login';
 import Registro from './Registro';
 import Home from './Home';
 import Director from './Director';
+// Importamos la nueva vista que crearemos
+import BuscarAlumno from './BuscarAlumno'; 
 import Orientacion from './Orientacion';
 import Salud from './Salud';
+import HistorialSalud from './HistorialSalud';
 import Atrasos from './Atrasos';
 import Retiros from './Retiros';
 import Reuniones from './Reuniones';
 import Preuniversitario from './Preuniversitario';
-import './style.css'; 
+import './style.css';
+import DetalleAlumno from './DetalleAlumno';
 
 function Navbar() {
   const { user, logout } = useContext(AuthContext);
@@ -22,7 +26,6 @@ function Navbar() {
     logout();
     navigate('/login');
   };
-
 
   return (
     <header className="navbar">
@@ -39,27 +42,9 @@ function Navbar() {
             </>
           ) : (
             <>
-              <li><Link to="/home">Home</Link></li>
-              
-              {user.cargo === 'Director' && (
-                <li><Link to="/director">Director</Link></li>
-              )}
-              
-              {['Orientacion', 'Director', 'Salud'].includes(user.cargo) && (
-                <>
-                <li><Link to="/atrasos">Atrasos</Link></li>
-                <li><Link to="/retiros">Retiros</Link></li>
-                <li><Link to="/reuniones">Reuniones</Link></li>
-                <li><Link to="/preuniversitarios">Preuniversitarios</Link></li>
-                </>
-              )}
-              
-              {user.cargo === 'Salud' && (
-                <li><Link to="/salud">Salud</Link></li>
-              )}
-
+              <li><Link to="/home">Inicio</Link></li>
               <li>
-                <button onClick={handleLogout} className="btn-logout btn-submit" style={{ padding: '0.4rem 0.8rem', fontSize: '0.9rem', cursor: 'pointer' }}>
+                <button onClick={handleLogout} className="btn-logout" style={{ border: 'none', color: '#fff', cursor: 'pointer' }}>
                   Cerrar sesión
                 </button>
               </li>
@@ -78,7 +63,7 @@ function AppContent() {
   return (
     <div className={isAuthPage ? "login-wrapper" : "app-container"}>
       {!isAuthPage && <Navbar />}
-      
+
       {isAuthPage ? (
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -91,11 +76,22 @@ function AppContent() {
             <Route element={<ProtectedRoute />}>
               <Route path="/home" element={<Home />} />
               <Route path="/director" element={<Director />} />
+              
+              {/* RUTAS DEL DIRECTOR */}
+              {/* Reutilizamos Atrasos pero le pasamos la prop modoDirector */}
+              <Route path="/director/atrasos" element={<Atrasos modoDirector={true} />} />
+              <Route path="/director/buscar-alumno" element={<BuscarAlumno />} />
+              {/* Ruta futura para ver el detalle de un alumno específico */}
+              <Route path="/director/alumno/:rut" element={<DetalleAlumno />} />
+
+              <Route path="/orientacion" element={<Orientacion />} />
+              <Route path="/director/alumno/:rut" element={<DetalleAlumno />} />
               <Route path="/atrasos" element={<Atrasos />} />
               <Route path="/retiros" element={<Retiros />} />
               <Route path="/reuniones" element={<Reuniones />} />
               <Route path="/preuniversitarios" element={<Preuniversitario />} />
               <Route path="/salud" element={<Salud />} />
+              <Route path="/salud/historial" element={<HistorialSalud />} />
             </Route>
           </Routes>
         </main>
@@ -104,7 +100,7 @@ function AppContent() {
   );
 }
 
-function App() {
+export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -113,5 +109,3 @@ function App() {
     </AuthProvider>
   );
 }
-
-export default App;

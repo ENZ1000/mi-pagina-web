@@ -35,7 +35,8 @@ CREATE TABLE Apoderado (
     nombre_completo VARCHAR(100),
     correo_electronico VARCHAR(100),
     fecha_nacimiento DATE,
-    direccion_completa VARCHAR(100)
+    direccion_completa VARCHAR(100),
+    telefono VARCHAR(20)
 );
 
 

@@ -304,6 +304,70 @@ export default function Salud() {
               style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border)' }}
             />
           </div>
+
+          <div className="input-group">
+            <label htmlFor="salud-fecha-ingreso">Fecha de Ingreso (Hoy)</label>
+            <input type="date" id="salud-fecha-ingreso" value={fechaIngreso} required readOnly />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="salud-inicio">Licencia Desde</label>
+            <input
+              type="date"
+              id="salud-inicio"
+              value={fechaInicio}
+              onChange={(e) => setFechaInicio(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="salud-duracion">Duración (Días)</label>
+            <input
+              type="number"
+              id="salud-duracion"
+              min="1"
+              placeholder="Ej. 3"
+              value={diasReposo}
+              onChange={(e) => setDiasReposo(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="salud-diagnostico">Diagnóstico</label>
+            <input
+              type="text"
+              id="salud-diagnostico"
+              value={diagnostico}
+              onChange={(e) => setDiagnostico(e.target.value)}
+              placeholder="Ej. Cuadro viral respiratorio"
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="salud-archivo">Documento (PDF/IMG)</label>
+            <input
+              type="file"
+              id="salud-archivo"
+              accept=".pdf, image/*"
+              onChange={(e) => setArchivoLicencia(e.target.files[0])}
+              required
+            />
+          </div>
+
+          <div className="checkbox-container" style={{ marginTop: '1.8rem' }}>
+            <label htmlFor="salud-eximido">
+              <input
+                type="checkbox"
+                id="salud-eximido"
+                checked={eximidoFisico}
+                onChange={(e) => setEximidoFisico(e.target.checked)}
+              />
+              Eximido Educación Física
+            </label>
+          </div>
         </div>
 
         <table className="data-table">

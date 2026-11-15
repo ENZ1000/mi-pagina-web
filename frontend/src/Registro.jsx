@@ -62,6 +62,7 @@ export default function Registro() {
             <option value="Orientacion">Orientacion</option>
             <option value="Salud">Salud</option>
             <option value="UTP">UTP</option>
+            <option value="Director">Director</option>
             <option value="Convivencia">Convivencia</option>
           </select>
         </div>
