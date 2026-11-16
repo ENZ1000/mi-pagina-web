@@ -460,3 +460,82 @@ textarea:focus {
   color: var(--text-muted);
   border: 1px solid var(--border);
 }
+
+/*
+  MODO OSCURO
+*/
+body.dark-mode {
+  --primary: #3b82f6; 
+  --primary-hover: #2563eb;
+  --accent: #60a5fa;
+  --bg-page: #0b1120;      
+  --card-bg: #131c2e;      
+  --text-main: #f1f5f9;    
+  --text-muted: #94a3b8;   
+  --border: #1e293b;       
+}
+
+body.dark-mode .info-box {
+  background-color: #1e3a8a;
+  color: #bfdbfe;
+  border-left-color: #60a5fa;
+}
+
+body.dark-mode .badge-success {
+  background-color: #064e3b;
+  color: #a7f3d0;
+}
+
+body.dark-mode tr.atraso-leve {
+  background-color: #713f12 !important;
+  color: #fef08a;
+}
+
+body.dark-mode tr.atraso-grave {
+  background-color: #7f1d1d !important;
+  color: #fecaca;
+}
+
+body.dark-mode .btn-secondary {
+  background-color: #334155;
+  color: #f8fafc;
+}
+
+body.dark-mode .btn-secondary:hover {
+  background-color: #475569;
+}
+
+/* Botón flotante de Luna / Sol en la esquina inferior */
+.theme-toggle-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  z-index: 1000;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.1);
+  background-color: var(--primary-hover);
+}
+
+.theme-toggle-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

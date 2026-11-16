@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './AuthContext';
 import ProtectedRoute from './ProtectedRoute';
@@ -59,6 +59,14 @@ function Navbar() {
 function AppContent() {
   const location = useLocation();
   const isAuthPage = location.pathname === '/login' || location.pathname === '/registro';
+
+  // Mantener el tema oscuro activo al navegar entre páginas
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+    }
+  }, []);
 
   return (
     <div className={isAuthPage ? "login-wrapper" : "app-container"}>

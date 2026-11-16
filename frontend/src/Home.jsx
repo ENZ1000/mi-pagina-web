@@ -1,9 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
 
 export default function Home() {
   const { user } = useContext(AuthContext);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   const modulos = [
     {
@@ -53,7 +70,7 @@ export default function Home() {
   const modulosVisibles = modulos.filter((m) => m.permitido);
 
   return (
-    <div>
+    <div style={{ position: 'relative', minHeight: '70vh' }}>
       <div style={{ marginBottom: '1.5rem' }}>
         <h2>Portal Institucional</h2>
         <p style={{ color: 'var(--text-muted)' }}>
@@ -75,6 +92,33 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* Botón flotante de Luna / Sol en la esquina inferior */}
+      <button 
+        onClick={toggleDarkMode} 
+        className="theme-toggle-btn"
+        title={darkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+      >
+        {darkMode ? (
+          // Icono de Sol (cuando está en modo oscuro, para pasar a claro)
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="4.22" x2="19.78" y2="5.64"></line>
+          </svg>
+        ) : (
+          // Icono de Luna (cuando está en modo claro, para pasar a oscuro)
+          <svg viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        )}
+      </button>
     </div>
   );
 }
